@@ -35,9 +35,6 @@ C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Microsoft.IdentityModel.Toke
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Microsoft.OpenApi.dll
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Microsoft.SqlServer.Server.dll
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\System.ClientModel.dll
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
 C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\System.Drawing.Common.dll
@@ -73,8 +70,6 @@ C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.AssemblyInfo.cs
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.csproj.CoreCompileInputs.cache
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.RazorAssemblyInfo.cache
-C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.RazorAssemblyInfo.cs
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.sourcelink.json
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
@@ -91,3 +86,4 @@ C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\refint\API.dll
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.pdb
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\API.genruntimeconfig.cache
 C:\Users\grana\Desktop\sprintC\API\obj\Debug\net9.0\ref\API.dll
+C:\Users\grana\Desktop\sprintC\API\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll

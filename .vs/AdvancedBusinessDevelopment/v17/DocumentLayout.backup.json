@@ -1,12 +1,37 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\grana\\Desktop\\sprintC\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{BA6C4CCC-0932-4CB7-8D99-0E32324ADD9E}|Application\\Application.csproj|c:\\users\\grana\\desktop\\sprintc\\application\\dtos\\basedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA6C4CCC-0932-4CB7-8D99-0E32324ADD9E}|Application\\Application.csproj|solutionrelative:application\\dtos\\basedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BaseDTO.cs",
+              "DocumentMoniker": "C:\\Users\\grana\\Desktop\\sprintC\\Application\\DTOs\\BaseDTO.cs",
+              "RelativeDocumentMoniker": "Application\\DTOs\\BaseDTO.cs",
+              "ToolTip": "C:\\Users\\grana\\Desktop\\sprintC\\Application\\DTOs\\BaseDTO.cs",
+              "RelativeToolTip": "Application\\DTOs\\BaseDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-09T19:47:08.623Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
