@@ -1,0 +1,80 @@
+@model VeiculoItemViewModel
+
+@{
+    ViewData["Title"] = "Detalhes do Veículo";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="d-flex align-items-center mb-4">
+            <a href="@Url.Action("Index", "VeiculosWeb")" class="btn btn-outline-secondary btn-sm me-2">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </a>
+            <h1 class="page-title m-0">
+                <i class="bi bi-car-front-fill"></i> @Model.Placa
+            </h1>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Informações do Veículo</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Placa</h6>
+                        <p class="lead">@Model.Placa</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Cliente</h6>
+                        <p class="lead">@Model.NomeCliente</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Marca</h6>
+                        <p>@Model.Marca</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Modelo</h6>
+                        <p>@Model.Modelo</p>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <h6 class="text-muted mb-2">Ano</h6>
+                        <p>@Model.Ano</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h6 class="text-muted mb-2">Cor</h6>
+                        <p>
+                            <span class="badge p-2" style="background-color: @Model.Cor; border: 1px solid #ccc;">
+                                @Model.Cor
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">ID</h6>
+                        <p class="badge bg-secondary">@Model.Id</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <div class="btn-group" role="group">
+                    <a href="@Url.Action("Edit", "VeiculosWeb", new { id = Model.Id })" class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="@Url.Action("Create", "VeiculosWeb")" class="btn btn-success btn-sm">
+                        <i class="bi bi-plus-circle"></i> Novo Veículo
+                    </a>
+                    <a href="@Url.Action("Index", "VeiculosWeb")" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-list"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

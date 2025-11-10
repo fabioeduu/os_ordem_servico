@@ -91,10 +91,108 @@ namespace Application.Services
             return ConverterParaDTO(ordemServico);
         }
 
+        public async Task<OrdemServicoDTO> AtualizarOrdemServicoAsync(OrdemServicoDTO dto)
+        {
+            var ordemServico = await _ordemServicoRepository.GetByIdAsync(dto.Id);
+            if (ordemServico == null)
+            {
+                throw new Exceptions.BusinessException("Ordem de Serviço não encontrada.");
+            }
+
+            // Validar se o veículo existe
+            var veiculo = await _veiculoRepository.GetByIdAsync(dto.VeiculoId);
+            if (veiculo == null)
+            {
+                throw new Exceptions.BusinessException("Veículo não encontrado.");
+            }
+
+            // Validar valor
+            if (dto.ValorTotal < 0)
+            {
+                throw new Exceptions.BusinessException("Valor total não pode ser negativo.");
+            }
+
+            // Atualizar campos
+            ordemServico.Descricao = dto.Descricao ?? ordemServico.Descricao;
+            ordemServico.ValorTotal = dto.ValorTotal > 0 ? dto.ValorTotal : ordemServico.ValorTotal;
+            ordemServico.Observacoes = dto.Observacoes ?? ordemServico.Observacoes;
+            ordemServico.VeiculoId = dto.VeiculoId;
+
+            // Atualizar status se foi fornecido
+            if (!string.IsNullOrEmpty(dto.Status))
+            {
+                if (Enum.TryParse<StatusOrdemServico>(dto.Status, out var statusParsed))
+                {
+                    ordemServico.Status = statusParsed;
+                    
+                    // Se status é Concluida e não tem data de fechamento, definir
+                    if (statusParsed == StatusOrdemServico.Concluida && !ordemServico.DataFechamento.HasValue)
+                    {
+                        ordemServico.DataFechamento = DateTime.Now;
+                    }
+                }
+            }
+
+            // Salvar
+            await _ordemServicoRepository.UpdateAsync(ordemServico);
+
+            return ConverterParaDTO(ordemServico);
+        }
+
         public async Task<IEnumerable<OrdemServicoDTO>> ListarTodasAsync()
         {
             var ordensServico = await _ordemServicoRepository.GetAllAsync();
             return ordensServico.Select(os => ConverterParaDTO(os));
+        }
+
+        public async Task<PagedResultDTO<OrdemServicoDTO>> BuscarOrdensServicoAsync(PaginationDTO paginationDTO)
+        {
+            var ordensServico = await _ordemServicoRepository.GetAllAsync();
+
+            // Aplicar filtro de busca
+            if (!string.IsNullOrWhiteSpace(paginationDTO.SearchTerm))
+            {
+                ordensServico = ordensServico.Where(os =>
+                    os.Descricao.Contains(paginationDTO.SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    os.Status.ToString().Contains(paginationDTO.SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    os.Veiculo?.Placa.Contains(paginationDTO.SearchTerm, StringComparison.OrdinalIgnoreCase) == true
+                ).ToList();
+            }
+
+            int totalCount = ordensServico.Count();
+
+            // Aplicar ordenação
+            var ordensOrdenadas = paginationDTO.OrderBy?.ToLower() switch
+            {
+                "dataabertura" => paginationDTO.Descending
+                    ? ordensServico.OrderByDescending(os => os.DataAbertura).ToList()
+                    : ordensServico.OrderBy(os => os.DataAbertura).ToList(),
+                "status" => paginationDTO.Descending
+                    ? ordensServico.OrderByDescending(os => os.Status).ToList()
+                    : ordensServico.OrderBy(os => os.Status).ToList(),
+                "valortotal" => paginationDTO.Descending
+                    ? ordensServico.OrderByDescending(os => os.ValorTotal).ToList()
+                    : ordensServico.OrderBy(os => os.ValorTotal).ToList(),
+                _ => paginationDTO.Descending
+                    ? ordensServico.OrderByDescending(os => os.Id).ToList()
+                    : ordensServico.OrderBy(os => os.Id).ToList()
+            };
+
+            // Aplicar paginação
+            var ordensPaginadas = ordensOrdenadas
+                .Skip((paginationDTO.PageNumber - 1) * paginationDTO.PageSize)
+                .Take(paginationDTO.PageSize)
+                .ToList();
+
+            var result = new PagedResultDTO<OrdemServicoDTO>
+            {
+                Items = ordensPaginadas.Select(os => ConverterParaDTO(os)).ToList(),
+                TotalCount = totalCount,
+                PageNumber = paginationDTO.PageNumber,
+                PageSize = paginationDTO.PageSize
+            };
+
+            return result;
         }
 
         public async Task FecharOrdemServicoAsync(int id)

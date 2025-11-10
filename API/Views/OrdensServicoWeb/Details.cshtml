@@ -1,0 +1,109 @@
+@model OrdemServicoItemViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da OS";
+}
+
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="d-flex align-items-center mb-4">
+            <a href="@Url.Action("Index", "OrdensServicoWeb")" class="btn btn-outline-secondary btn-sm me-2">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </a>
+            <h1 class="page-title m-0">
+                <i class="bi bi-file-earmark-check-fill"></i> Ordem #@Model.Id
+            </h1>
+        </div>
+
+        <!-- Header Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5 class="mb-0">Veículo: @Model.PlacaVeiculo</h5>
+                        <small class="text-muted">@Model.ModeloVeiculo</small>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        @{
+                            var badgeClass = Model.Status switch
+                            {
+                                "Aberta" => "bg-info",
+                                "EmAndamento" => "bg-warning",
+                                "Aguardando" => "bg-secondary",
+                                "Concluida" => "bg-success",
+                                "Cancelada" => "bg-danger",
+                                _ => "bg-secondary"
+                            };
+                        }
+                        <span class="badge @badgeClass" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                            @Model.Status
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Data de Abertura</h6>
+                        <p class="lead">@Model.DataAbertura.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                    <div class="col-md-6">
+                        @if (Model.DataFechamento.HasValue)
+                        {
+                            <h6 class="text-muted mb-2">Data de Fechamento</h6>
+                            <p class="lead">@Model.DataFechamento.Value.ToString("dd/MM/yyyy HH:mm")</p>
+                        }
+                        else
+                        {
+                            <h6 class="text-muted mb-2">Data de Fechamento</h6>
+                            <p class="text-muted">Ainda não fechada</p>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h6 class="text-muted mb-2">Descrição</h6>
+                        <p>@Model.Descricao</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">Valor Total</h6>
+                        <p class="display-6 text-success">R$ @Model.ValorTotal.ToString("F2")</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted mb-2">ID</h6>
+                        <p class="badge bg-secondary">@Model.Id</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <div class="btn-group" role="group">
+                    <a href="@Url.Action("Edit", "OrdensServicoWeb", new { id = Model.Id })" class="btn btn-primary btn-sm">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="@Url.Action("Create", "OrdensServicoWeb")" class="btn btn-success btn-sm">
+                        <i class="bi bi-plus-circle"></i> Nova Ordem
+                    </a>
+                    @if (Model.Status != "Concluida" && Model.Status != "Cancelada")
+                    {
+                        <form method="post" action="@Url.Action("Fechar", "OrdensServicoWeb", new { id = Model.Id })" style="display:inline;">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-warning btn-sm"
+                                    onclick="return confirm('Tem certeza que deseja fechar esta ordem?')">
+                                <i class="bi bi-check-circle"></i> Fechar Ordem
+                            </button>
+                        </form>
+                    }
+                    <a href="@Url.Action("Index", "OrdensServicoWeb")" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-list"></i> Voltar à Lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

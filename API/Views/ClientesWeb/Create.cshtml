@@ -1,0 +1,132 @@
+@model Application.ViewModels.ClienteFormViewModel
+
+@{
+    ViewData["Title"] = Model.IsEdit ? "Editar Cliente" : "Novo Cliente";
+}
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">
+            <i class="bi bi-person-plus"></i> @ViewData["Title"]
+        </h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="/ClientesWeb" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" asp-action="@(Model.IsEdit ? "Update" : "Create")" novalidate>
+                    @if (Model.IsEdit)
+                    {
+                        <input type="hidden" name="id" value="@Model.Id" />
+                    }
+
+                    <div class="mb-3">
+                        <label for="Nome" class="form-label">Nome <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" 
+                               id="Nome" name="Nome" value="@Model.Nome" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="CPF" class="form-label">CPF <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" 
+                               id="CPF" name="CPF" value="@Model.CPF" placeholder="000.000.000-00" required>
+                        <div class="invalid-feedback">
+                            O CPF é obrigatório e deve ser único.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Telefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" id="Telefone" name="Telefone" 
+                               value="@Model.Telefone" placeholder="(11) 98765-4321">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" 
+                               value="@Model.Email" placeholder="email@example.com">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Endereco" class="form-label">Endereço</label>
+                        <textarea class="form-control" id="Endereco" name="Endereco" rows="3">@Model.Endereco</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="/ClientesWeb" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> @(Model.IsEdit ? "Atualizar" : "Criar") Cliente
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <h5><i class="bi bi-info-circle"></i> Informações</h5>
+            <ul class="mb-0">
+                <li>Todos os campos marcados com <span class="text-danger">*</span> são obrigatórios.</li>
+                <li>O CPF deve ser único no sistema.</li>
+                <li>O email será usado para contato com o cliente.</li>
+                <li>Os dados serão armazenados com segurança.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Validação do formulário
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.querySelectorAll('form');
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+            }, false);
+        }());
+
+        // Formatação de CPF
+        document.getElementById('CPF').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length > 6) {
+                value = value.slice(0, 3) + '.' + value.slice(3, 6) + '.' + value.slice(6, 9) + '-' + value.slice(9);
+            } else if (value.length > 3) {
+                value = value.slice(0, 3) + '.' + value.slice(3);
+            }
+            e.target.value = value;
+        });
+
+        // Formatação de Telefone
+        document.getElementById('Telefone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length > 7) {
+                value = '(' + value.slice(0, 2) + ') ' + value.slice(2, 7) + '-' + value.slice(7);
+            } else if (value.length > 2) {
+                value = '(' + value.slice(0, 2) + ') ' + value.slice(2);
+            }
+            e.target.value = value;
+        });
+    </script>
+}

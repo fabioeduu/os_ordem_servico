@@ -1,0 +1,93 @@
+@model OrdemServicoFormViewModel
+
+@{
+    ViewData["Title"] = Model.IsEdit ? "Editar OS" : "Nova OS";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="page-title">
+            <i class="bi bi-file-earmark-check-fill"></i>
+            @(Model.IsEdit ? "Editar OS" : "Nova OS")
+        </h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="@(Model.IsEdit ? "Update" : "Create")" method="post" novalidate class="needs-validation">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Veículo Select -->
+                    <div class="mb-3">
+                        <label asp-for="VeiculoId" class="form-label">
+                            Veículo <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="VeiculoId" class="form-select" 
+                                asp-items="@(new SelectList(Model.Veiculos ?? new List<VeiculoSelectViewModel>(), "Id", "PlacaModelo"))" 
+                                required data-validation-required-message="Por favor, selecione um veículo">
+                            <option value="">-- Selecione um Veículo --</option>
+                        </select>
+                        <span asp-validation-for="VeiculoId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Descrição -->
+                    <div class="mb-3">
+                        <label asp-for="Descricao" class="form-label">
+                            Descrição <span class="text-danger">*</span>
+                        </label>
+                        <textarea asp-for="Descricao" class="form-control" rows="4" 
+                                  placeholder="Descreva o serviço a ser realizado..." required></textarea>
+                        <span asp-validation-for="Descricao" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mb-3">
+                        <label asp-for="Status" class="form-label">
+                            Status <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="Status" class="form-select" required>
+                            <option value="">-- Selecione um Status --</option>
+                            <option value="Aberta" selected="@(Model.Status == "Aberta")">Aberta</option>
+                            <option value="EmAndamento" selected="@(Model.Status == "EmAndamento")">Em Andamento</option>
+                            <option value="Aguardando" selected="@(Model.Status == "Aguardando")">Aguardando</option>
+                            <option value="Concluida" selected="@(Model.Status == "Concluida")">Concluída</option>
+                            <option value="Cancelada" selected="@(Model.Status == "Cancelada")">Cancelada</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 pt-3">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="bi bi-check-circle"></i>
+                            @(Model.IsEdit ? "Atualizar" : "Criar") Ordem
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.querySelectorAll('.needs-validation');
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}

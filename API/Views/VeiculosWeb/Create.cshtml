@@ -1,0 +1,119 @@
+@model VeiculoFormViewModel
+
+@{
+    ViewData["Title"] = Model.IsEdit ? "Editar Veículo" : "Novo Veículo";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="page-title">
+            <i class="bi bi-car-front-fill"></i>
+            @(Model.IsEdit ? "Editar Veículo" : "Novo Veículo")
+        </h1>
+
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="@(Model.IsEdit ? "Update" : "Create")" method="post" novalidate class="needs-validation">
+                    @Html.AntiForgeryToken()
+
+                    <!-- Cliente Select -->
+                    <div class="mb-3">
+                        <label asp-for="ClienteId" class="form-label">
+                            Cliente <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="ClienteId" class="form-select" asp-items="@(new SelectList(Model.Clientes ?? new List<ClienteSelectViewModel>(), "Id", "Nome"))" 
+                                required data-validation-required-message="Por favor, selecione um cliente">
+                            <option value="">-- Selecione um Cliente --</option>
+                        </select>
+                        <span asp-validation-for="ClienteId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Placa -->
+                    <div class="mb-3">
+                        <label asp-for="Placa" class="form-label">
+                            Placa <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Placa" class="form-control" placeholder="Ex: ABC-1234" 
+                               pattern="[A-Z]{3}-[0-9]{4}" required data-validation-required-message="Placa é obrigatória">
+                        <small class="form-text text-muted">Formato: ABC-1234</small>
+                        <span asp-validation-for="Placa" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Marca -->
+                    <div class="mb-3">
+                        <label asp-for="Marca" class="form-label">
+                            Marca <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Marca" class="form-control" placeholder="Ex: Toyota" required>
+                        <span asp-validation-for="Marca" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Modelo -->
+                    <div class="mb-3">
+                        <label asp-for="Modelo" class="form-label">
+                            Modelo <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Modelo" class="form-control" placeholder="Ex: Corolla" required>
+                        <span asp-validation-for="Modelo" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <!-- Ano -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Ano" class="form-label">
+                                Ano <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Ano" class="form-control" type="number" 
+                                   placeholder="Ex: 2024" min="1900" max="2099" required>
+                            <span asp-validation-for="Ano" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Cor -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Cor" class="form-label">
+                                Cor <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="Cor" class="form-control" type="color" required>
+                                <input type="text" class="form-control" placeholder="Descrição" id="corDescricao">
+                            </div>
+                            <span asp-validation-for="Cor" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-2 pt-3">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary flex-grow-1">
+                            <i class="bi bi-check-circle"></i>
+                            @(Model.IsEdit ? "Atualizar" : "Criar") Veículo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form validation
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.querySelectorAll('.needs-validation');
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}
